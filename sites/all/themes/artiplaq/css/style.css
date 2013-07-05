@@ -2005,6 +2005,13 @@ div.admin-panel .description {
   clear:both;
 }
 
+
+
+#edit-line-item-fields-field-united-inch{float: left;margin-bottom: 2px;}
+#edit-line-item-fields-field-color{clear:both;}
+#edit-line-item-fields-field-print-size,#field-hidden-image{display:none;}
+#united-inch-size{float: left;margin: 25px 25px 0;}
+
 /*-------------- Mounted Photos Product ---------------*/
 
 .page-mounted-photos #page-title{

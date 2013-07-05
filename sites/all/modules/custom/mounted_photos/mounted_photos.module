@@ -88,26 +88,26 @@ function mounted_photos_form_alter(&$form, &$form_state, $form_id) {
   
   if($form_id == 'product_node_form' && arg(0) != 'node'){
     drupal_set_title('Choose Your Photo');
-   
+    
     unset($form['actions']['preview']);
     $form['title']['#value'] = t('Image');
     $form['actions']['submit']['#value'] = t('Upload Image');
     $form['actions']['submit']['#attributes'] = array('class' => array('green-btn'));
-    //array_unshift($form['#validate'],'mounted_photos_custom_validate');
-    //array_push($form['#submit'], "mounted_photos_custom_submit");
-    //array_unshift( $array,'All' ); 
     
   } 
   
   if(strpos($form_id, 'commerce_cart_add_to_cart_form') !== false){
     global $base_url;
     if ($form['line_item_fields']['#entity']->type == 'product'){
+      
+      $form['line_item_fields']['field_united_inch']['#suffix'] = '<div id="united-inch-size"></div>';
+      
       $fileUrl = $base_url.get_price_list_link();
       $form['view_prices'] = array(
         '#type' => 'link',
         '#title' => t('View Our Price Sheet'),
         '#href' => $fileUrl,
-        '#weight' => 10,
+        '#weight' => 40,
         '#prefix' => '<div style="float:left;margin:10px 0;">',
         '#suffix' => '</div>',
       );  

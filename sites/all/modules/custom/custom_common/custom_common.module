@@ -90,3 +90,62 @@ function custom_common_update_cart_total(){
   return  drupal_json_output(array('count' => $html));
 }
 
+function custom_common_commerce_cart_product_add($order, $product, $quantity, $line_item) {
+  
+  if($line_item->type == 'product'){
+    
+    
+    $new_line_item = commerce_line_item_load((int)$line_item->line_item_id);
+    
+    $unitedInch = $new_line_item->field_united_inch['und'][0]['tid'];
+    $mountStyle = $new_line_item->field_mount_style['und'][0]['tid'];
+    $price = calculate_commerce_mounted_photo_price($unitedInch, $mountStyle);
+    
+    $unitPrice = $new_line_item->commerce_unit_price['und'][0]['amount'];
+    
+    $new_line_item->commerce_unit_price['und'][0]['amount'] = ($unitPrice + $price);
+    $new_line_item->commerce_unit_price['und'][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD'),
+        'included' => 1 );
+    
+    
+    $new_line_item->commerce_total['und'][0]['amount'] = ($unitPrice + $price);
+    $new_line_item->commerce_total['und'][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD'),
+        'included' => 1 );
+        
+    commerce_line_item_save($new_line_item);  
+    
+  }
+  // No example.
+}
+
+
+function calculate_commerce_mounted_photo_price($unitedInch, $mountStyle){
+  
+   $term = taxonomy_term_load($mountStyle);
+   $mount = strtolower($term->name);
+   
+   $query = new EntityFieldQuery;
+   $query->entityCondition('entity_type', 'node')
+          ->entityCondition('bundle', 'retail_price_list')
+          ->propertyCondition('status', 1)
+          ->fieldCondition('field_united_inch', 'tid', $unitedInch, '=')
+          ->range(0, 1);
+  $result = $query->execute();
+  
+  if (isset($result['node'])) {
+    $nid = array_keys($result['node']);
+    $node = node_load($nid);
+    if($mount == 'float mount'){
+      $price = $node->field_float_mount_price[LANGUAGE_NONE][0]['value'] * 100;  
+    }
+    elseif ($mount == 'plaque mount'){
+      $price = $node->field_plaq_mount_price[LANGUAGE_NONE][0]['value'] * 100;
+    } 
+  }
+  
+  return $price;
+}

@@ -53,6 +53,9 @@ function custom_shipping_service_rate($shipping_service, $order) {
   $shipping_amount = 0;
   foreach($order->commerce_line_items['und'] as $line){
     $line_item = commerce_line_item_load($line['line_item_id']);
+    
+    
+    
     if($line_item->type == 'nautical_chart'){
       $term = taxonomy_term_load($line_item->field_mount_type[LANGUAGE_NONE][0]['tid']);
       if(in_array(strtolower($term->name),array('float mount','plaq mount'))){
@@ -67,6 +70,11 @@ function custom_shipping_service_rate($shipping_service, $order) {
       }elseif (in_array(strtolower($term->name),array('paper charts'))){
         $shipping_amount += ceil($line_item->quantity / 20) * 500;
       }
+    }else{
+      echo '<pre>';
+      print_r($line_item);
+      echo '</pre>';
+      exit;
     }
     watchdog('line item','<pre>'.print_r($line_item,true));
     
