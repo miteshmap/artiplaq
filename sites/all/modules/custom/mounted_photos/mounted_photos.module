@@ -1,0 +1,196 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function mounted_photos_menu() {
+  $items = array();
+  /*
+  $items['mounted_photos/get_started'] = array(
+    'title' => 'Mounted Photos',
+    'page callback' => 'node_add',
+    'page arguments' => array('product'),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'node.pages.inc',
+    'file path' => drupal_get_path('module','node'),
+  );
+  */
+ 
+ $items['mounted_photos/by_mail'] = array(
+    'title' => 'create Mounted Photos Node',
+    'page callback' => 'mounted_photos_create_node_programmatically',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+ 
+  return $items;
+}
+
+
+function mounted_photos_create_node_programmatically(){
+  
+  $query = db_select('node', 'n');
+  $query->addExpression('MAX(nid)', 'max_nid');
+  $result = $query->execute()->fetchObject();
+  $nid = $result->max_nid + 1;
+  
+	$node = new stdClass();
+	$node->type = 'product';
+	node_object_prepare($node);
+
+	//$node->title    = 'Image-'.$nid;
+	$node->language = LANGUAGE_NONE;
+	node_save($node);
+  
+  $product = mounted_photos_create_product_programmatically($node);
+  
+  $node->title = 'Image-'.$node->nid;
+	$node->field_product['und'][0]['product_id'] = $product->product_id;
+	node_save($node);
+  
+  drupal_goto('mounted_photos/get_started/'.$node->nid);  
+}
+
+
+function mounted_photos_create_product_programmatically($node){
+  
+  $new_product = commerce_product_new('product');
+
+  $new_product->status = 1;
+  $new_product->uid = 1;
+
+  $new_product->title = $node->title;
+  $new_product->created = $new_product->changed = time();
+  $new_product->is_new = true;
+  $new_product->commerce_price = array(LANGUAGE_NONE => array(array('amount' => 5000,'currency_code' => 'USD')));
+
+  commerce_product_save($new_product);
+  return $new_product;
+}
+
+
+/**
+ * Implements hook_theme().
+
+function mounted_photos_theme() {
+  return array(
+    'mounted_photos_add_image' => array(
+      'render element' => 'form',
+    ),
+  );
+} */
+
+/**
+ * Implements hook_form_alter().
+ */
+function mounted_photos_form_alter(&$form, &$form_state, $form_id) {
+  
+  if($form_id == 'product_node_form' && arg(0) != 'node'){
+    drupal_set_title('Choose Your Photo');
+   
+    unset($form['actions']['preview']);
+    $form['title']['#value'] = t('Image');
+    $form['actions']['submit']['#value'] = t('Upload Image');
+    $form['actions']['submit']['#attributes'] = array('class' => array('green-btn'));
+    //array_unshift($form['#validate'],'mounted_photos_custom_validate');
+    //array_push($form['#submit'], "mounted_photos_custom_submit");
+    //array_unshift( $array,'All' ); 
+    
+  } 
+  
+  if(strpos($form_id, 'commerce_cart_add_to_cart_form') !== false){
+    global $base_url;
+    if ($form['line_item_fields']['#entity']->type == 'product'){
+      $fileUrl = $base_url.get_price_list_link();
+      $form['view_prices'] = array(
+        '#type' => 'link',
+        '#title' => t('View Our Price Sheet'),
+        '#href' => $fileUrl,
+        '#weight' => 10,
+        '#prefix' => '<div style="float:left;margin:10px 0;">',
+        '#suffix' => '</div>',
+      );  
+    } else {
+      $form['find_a_dealer'] = array(
+        '#type' => 'item',
+        '#markup' => t('Prefer to order in person? ').l(t('FIND A DEALER'),'#'),
+        '#weight' => 50,
+      );
+    }
+    $form['submit']['#weight'] = 20;
+    $form['submit']['#attributes'] = array('class' => array('green-btn'),'style' => 'float:right;');
+  }
+}
+
+
+function mounted_photos_custom_validate($form, &$form_state){
+   form_set_value($form['title'], array(0 => array('value' => 'Image')), $form_state); 
+}
+
+
+function mounted_photos_node_insert($node) {
+  if($node->type == 'product' && arg(1) != 'by_mail'){
+    mounted_phots_node_title($node);
+    $node->title = 'Image-'.$node->nid;
+    drupal_goto('mounted_photos/get_started/'.$node->nid);  
+  }
+  
+}
+
+function mounted_phots_node_title($node){
+  $title = 'Image-'.$node->nid;
+  $nid = $node->nid;
+  db_update('node')
+  ->fields(array('title' => $title))
+  ->condition('nid',$nid)
+  ->execute();
+  
+  db_update('node_revision')
+  ->fields(array('title' => $title))
+  ->condition('nid',$nid)
+  ->execute();
+  
+}
+
+
+function mounted_photos_node_submit($node, $form, &$form_state) {
+  // Decompose the selected menu parent option into 'menu_name' and 'plid', if
+  // the form used the default parent selection widget.
+  if ($node->type == 'product') {
+    if(empty($node->field_product['und'])){
+      $product = mounted_photos_create_product_programmatically($node);
+      
+      $node->field_product['und'][0]['product_id'] = $product->product_id;  
+    }
+  }
+}
+
+function get_price_list_link(){
+  
+  $query = db_select('field_data_field_file', 'n')
+            ->fields('n',array('field_file_fid'))
+            ->condition('entity_id', 75,'=')
+            ->execute();
+  $result = $query->fetchObject();
+  return download_file_url($result->field_file_fid);
+}
+
+/*
+function theme_mounted_photos_add_image($variables){
+  $form = $variables['form'];
+  $output = '<div class="stepdiv-mounted-photos">
+              <ol>
+                <li class="active"><span>'.l(t('choose your photo'),'mounted_photos/get_started').'</span></li>
+                <li><span>'.t('Customize Options').'</span></li>
+                <li><span>'.t('confirm your order').'</span></li>
+              </ol>
+            </div>';
+  $output .= '<div  class="upload-form"><div>';
+  $output .= drupal_render_children($form);
+  $output .= '</div>';
+  
+  
+  return $output;
+}
+*/

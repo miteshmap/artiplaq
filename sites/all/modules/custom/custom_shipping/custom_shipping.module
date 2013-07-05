@@ -1,0 +1,169 @@
+<?php
+
+/**
+ * @file
+ * Defines an example shipping method for testing and development.
+ */
+
+
+/**
+ * Implements hook_commerce_shipping_method_info().
+ */
+function custom_shipping_commerce_shipping_method_info() {
+  $shipping_methods = array();
+
+  $shipping_methods['custom_shipping_method'] = array(
+    'title' => t('Custom shipping method'),
+    'description' => t('Defines a single flat rate service with a couple of service details.'),
+  );
+
+  return $shipping_methods;
+}
+
+/**
+ * Implements hook_commerce_shipping_service_info().
+ */
+function custom_shipping_commerce_shipping_service_info() {
+  $shipping_services = array();
+
+  $shipping_services['custom_shipping_service'] = array(
+    'title' => t('Custom shipping service'),
+    'description' => t('A $50 flat rate service with express delivery available for an additional $15.'),
+    'display_title' => t('Shipping'),
+    'shipping_method' => 'custom_shipping_method',
+    'price_component' => 'shipping',
+    'callbacks' => array(
+      'rate' => 'custom_shipping_service_rate',
+      //'details_form' => 'custom_shipping_service_details_form',
+      //'details_form_validate' => 'custom_shipping_service_details_form_validate',
+      //'details_form_submit' => 'custom_shipping_service_details_form_submit',
+    ),
+  );
+
+  return $shipping_services;
+}
+
+/**
+ * Shipping service callback: returns a base price array for a shipping service
+ * calculated for the given order.
+ */
+function custom_shipping_service_rate($shipping_service, $order) {
+  global $user;
+  
+  $shipping_amount = 0;
+  foreach($order->commerce_line_items['und'] as $line){
+    $line_item = commerce_line_item_load($line['line_item_id']);
+    if($line_item->type == 'nautical_chart'){
+      $term = taxonomy_term_load($line_item->field_mount_type[LANGUAGE_NONE][0]['tid']);
+      if(in_array(strtolower($term->name),array('float mount','plaq mount'))){
+        $shipping_amount += ceil($line_item->quantity / 2) * 5000;
+      }elseif (in_array(strtolower($term->name),array('paper charts'))){
+        $shipping_amount += ceil($line_item->quantity / 20) * 500;
+      }
+    }elseif ($line_item->type == 'posters_prints'){
+      $term = taxonomy_term_load($line_item->field_poster_mount_types[LANGUAGE_NONE][0]['tid']);
+      if(in_array(strtolower($term->name),array('float mount','plaq mount'))){
+        $shipping_amount += ceil($line_item->quantity / 2) * 5000;
+      }elseif (in_array(strtolower($term->name),array('paper charts'))){
+        $shipping_amount += ceil($line_item->quantity / 20) * 500;
+      }
+    }
+    watchdog('line item','<pre>'.print_r($line_item,true));
+    
+  }
+  
+  //watchdog('shipping_service','<pre>'.print_r($shipping_service,true));
+  
+  //$shipping_Amount = (5000) * rand(1,100);
+  return array(
+    'amount' => $shipping_amount,
+    'currency_code' => 'USD',
+    'data' => array(),
+  );
+}
+
+/**
+ * Shipping service callback: returns the example shipping service details form.
+
+function custom_shipping_service_details_form($pane_form, $pane_values, $checkout_pane, $order, $shipping_service) {
+  $form = array();
+
+  $pane_values['service_details'] += array(
+    'name' => '',
+    'express' => '',
+  );
+  
+  $form['name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Name'),
+    '#description' => t('This is a demonstration field coded to fail validation for single character values.'),
+    '#default_value' => $pane_values['service_details']['name'],
+    '#required' => TRUE,
+  );
+
+  $form['express'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Express delivery'),
+    '#description' => t('Express delivery (costs an additional $15)'),
+    '#default_value' => $pane_values['service_details']['express'],
+  );
+
+  return $form;
+}
+ */
+/**
+ * Shipping service callback: validates the example shipping service details.
+
+function custom_shipping_service_details_form_validate($details_form, $details_values, $shipping_service, $order, $form_parents) {
+  if (strlen($details_values['name']) < 2) {
+    form_set_error(implode('][', array_merge($form_parents, array('name'))), t('You must enter a name two or more characters long.'));
+
+    // Even though the form error is enough to stop the submission of the form,
+    // it's not enough to stop it from a Commerce standpoint because of the
+    // combined validation / submission going on per-pane in the checkout form.
+    return FALSE;
+  }
+}
+ */
+/**
+ * Shipping service callback: increases the shipping line item's unit price if
+ * express delivery was selected.
+ 
+function custom_shipping_service_details_form_submit($details_form, $details_values, $line_item) {
+  if ($details_values['express']) {
+    $line_item_wrapper = entity_metadata_wrapper('commerce_line_item', $line_item);
+
+    // Build a price array for the express delivery fee.
+    $express_price = array(
+      'amount' => 1500,
+      'currency_code' => 'USD',
+      'data' => array(),
+    );
+
+    // Add the express upcharge to the line item unit price.
+    watchdog('line_item_wrapper','<pre>'.print_r($line_item_wrapper,true));
+    $line_item_wrapper->commerce_unit_price->amount = $line_item_wrapper->commerce_unit_price->amount->value() + 1500;
+
+    // Add the express delivery fee component to the unit price.
+    $line_item_wrapper->commerce_unit_price->data = commerce_price_component_add(
+      $line_item_wrapper->commerce_unit_price->value(),
+      'custom_shipping_service_express',
+      $express_price,
+      TRUE,
+      FALSE
+    );
+  }
+}
+*/
+/**
+ * Implements hook_commerce_price_component_type_info().
+
+function custom_shipping_commerce_price_component_type_info() {
+  return array(
+    'custom_shipping_service_express' => array(
+      'title' => t('Express delivery'),
+      'weight' => 20,
+    ),
+  );
+}
+ */

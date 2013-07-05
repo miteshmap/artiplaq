@@ -1,0 +1,4 @@
+name = Custom Common
+description = "Common functionality for site"
+package = custom
+core = 7.x

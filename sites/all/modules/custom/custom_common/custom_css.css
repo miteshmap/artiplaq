@@ -1,0 +1,7 @@
+.view-retail-pricelist .views-row-edit-static{
+  display:none;
+}
+
+.view-retail-pricelist input[type="text"]{
+  width:170px;
+}

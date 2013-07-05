@@ -1,0 +1,92 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function custom_common_init() {
+  drupal_add_css(drupal_get_path('module', 'custom_common') . '/custom_css.css');
+  drupal_add_js('http://maps.googleapis.com/maps/api/js?sensor=false',array('type' => 'external'));
+   drupal_add_js(drupal_get_path('module', 'custom_common') . '/js/common.js');  
+  //drupal_add_js('https://maps.googleapis.com/maps/api/js?key=AIzaSyAlSfJNhOMTsIWIDixi9bun5S5FhI0RVpA&sensor=false',array('type' => 'external'));
+  jcarousel_add('differentskin', array('skin' => 'tango'));
+} 
+
+
+/**
+ * Implements hook_menu().
+ */
+function custom_common_menu() {
+  $items = array();
+  
+  $items['store-locator/%'] = array(
+    'title' => 'Store Locator',
+    'page callback' => 'store_locator_map_render',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'store-locator.pages.inc',
+  );
+  
+  $items['update_cart'] = array(
+    'page callback' => 'custom_common_update_cart_total',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function custom_common_block_info() {    
+  $blocks['nautical_chart_taxonomy_link'] = array(
+    'info' => t('More products link for Nautical charts taxonomy'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function custom_common_block_view($delta = '') {    
+  switch ($delta) {
+    case 'nautical_chart_taxonomy_link':
+      $block['subject'] = t('More products link for Nautical charts taxonomy');
+      $block['content'] = more_product_link_nautical_chart_taxonomy();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * callback for more product link nautical chart taxonomy().
+ */
+function more_product_link_nautical_chart_taxonomy() {
+  $nid = arg(1);
+  $node = node_load($nid);
+  $lang = $node->language;
+  $regionTerm = $node->field_chart_region[$lang][0]['tid']; 
+  $term = taxonomy_term_load($regionTerm);
+  $text =  t('More @region Charts',array('@region' => $term->name));
+  $link = l(t('View full List'),'nautical-charts/region/' . $term->tid);
+  $output = '<div class="nautical-chart-term">'.
+              '<span class="nautical-chart-term-left">' . $text . '</span>'.
+              '<span class="nautical-chart-term-right">' . $link . '</span>'.
+            '</div>';
+  return $output;
+}
+
+
+function custom_common_update_cart_total(){
+  global $user;
+  $order = commerce_cart_order_load($user->uid);
+  $wrapper = entity_metadata_wrapper('commerce_order', $order);
+  $count = commerce_line_items_quantity($wrapper->commerce_line_items, commerce_product_line_item_types());
+  $html = l(t('cart'),'cart') . " ($count)";
+  return  drupal_json_output(array('count' => $html));
+}
+

@@ -1,0 +1,4 @@
+name = Mounted Photos
+description = "Provide multistep form to upload photo and generate order"
+package = custom
+core = 7.x
