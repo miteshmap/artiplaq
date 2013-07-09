@@ -169,7 +169,7 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
     else {
       $revision_id = FALSE;
     }
-
+    
     // Create a new variable which is either a prepared version of the $ids
     // array for later comparison with the entity cache, or FALSE if no $ids
     // were passed. The $ids array is reduced as items are loaded from cache,

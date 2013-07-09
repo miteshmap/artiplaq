@@ -4,18 +4,7 @@
  * Implements hook_menu().
  */
 function mounted_photos_menu() {
-  $items = array();
-  /*
-  $items['mounted_photos/get_started'] = array(
-    'title' => 'Mounted Photos',
-    'page callback' => 'node_add',
-    'page arguments' => array('product'),
-    'access callback' => TRUE,
-    'type' => MENU_CALLBACK,
-    'file' => 'node.pages.inc',
-    'file path' => drupal_get_path('module','node'),
-  );
-  */
+ $items = array();
  
  $items['mounted_photos/by_mail'] = array(
     'title' => 'create Mounted Photos Node',
@@ -194,3 +183,100 @@ function theme_mounted_photos_add_image($variables){
   return $output;
 }
 */
+
+function mounted_photos_commerce_cart_product_add($order, $product, $quantity, $line_item) {
+  
+  if($line_item->type == 'product'){
+     
+    $unitedInch = $line_item->field_united_inch['und'][0]['tid'];
+    $mountStyle = $line_item->field_mount_style['und'][0]['tid'];
+    $price = calculate_commerce_mounted_photo_price($unitedInch, $mountStyle);
+    
+    $unitPrice = $line_item->commerce_unit_price[LANGUAGE_NONE][0]['amount'];
+    
+    $line_item->commerce_unit_price[LANGUAGE_NONE][0]['amount'] = ($unitPrice + $price);
+    $line_item->commerce_unit_price[LANGUAGE_NONE][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD','data' => Array('components' => Array())),
+        'included' => 1 );
+    
+    
+    $line_item->commerce_total[LANGUAGE_NONE][0]['amount'] = ($unitPrice + $price);
+    $line_item->commerce_total[LANGUAGE_NONE][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD','data' => Array('components' => Array())),
+        'included' => 1 );
+    
+    commerce_line_item_save($line_item);
+    /*
+    $unitPrice = $order->commerce_order_total[LANGUAGE_NONE][0]['amount'];
+    $order->commerce_order_total[LANGUAGE_NONE][0]['amount'] = ($unitPrice + $price);
+    $order->commerce_order_total[LANGUAGE_NONE][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD','data' => Array('components' => Array())),
+        'included' => 1 );
+    
+    commerce_order_save($order);
+    */
+  }
+}
+
+function mounted_photos_commerce_cart_line_item_refresh($line_item, $order_wrapper) {
+  //watchdog('line_item_refresh','<pre>'.print_r($line_item,true));
+ if($line_item->type == 'product'){
+  
+   $unitedInch = $line_item->field_united_inch['und'][0]['tid'];
+   $mountStyle = $line_item->field_mount_style['und'][0]['tid'];
+   $price = calculate_commerce_mounted_photo_price($unitedInch, $mountStyle);
+    
+    $unitPrice = $line_item->commerce_unit_price[LANGUAGE_NONE][0]['amount'];
+    
+    $line_item->commerce_unit_price[LANGUAGE_NONE][0]['amount'] = ($unitPrice + $price);
+    $line_item->commerce_unit_price[LANGUAGE_NONE][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD','data' => Array('components' => Array())),
+        'included' => 1 );
+    
+    
+    $line_item->commerce_total[LANGUAGE_NONE][0]['amount'] = ($unitPrice + $price);
+    $line_item->commerce_total[LANGUAGE_NONE][0]['data']['components'][] = array(
+        'name' => 'fee',
+        'price' => array('amount' => $price, 'currency_code' => 'USD','data' => Array('components' => Array())),
+        'included' => 1 );
+    
+    commerce_line_item_save($line_item);
+  }
+}
+
+
+function calculate_commerce_mounted_photo_price($unitedInch, $mountStyle){
+  
+  $price = 0;
+  if(!empty($mountStyle)){
+    
+     $term = taxonomy_term_load($mountStyle);
+     $mount = strtolower($term->name);
+     
+     $query = new EntityFieldQuery;
+     $query->entityCondition('entity_type', 'node')
+            ->entityCondition('bundle', 'retail_price_list')
+            ->propertyCondition('status', 1)
+            ->fieldCondition('field_united_inch', 'tid', $unitedInch, '=')
+            ->range(0, 1);
+    $result = $query->execute();
+    
+    if (isset($result['node'])) {
+      $nid = array_keys($result['node']);
+      $node = node_load($nid[0]);
+      if($mount == 'float mount' && !empty($node->field_float_mount_price[LANGUAGE_NONE])){
+        $price = (float)$node->field_float_mount_price[LANGUAGE_NONE][0]['value'] * 100;  
+      }
+      elseif ($mount == 'plaque mount' && !empty($node->field_plaq_mount_price[LANGUAGE_NONE])){
+        $price = (float)$node->field_plaq_mount_price[LANGUAGE_NONE][0]['value'] * 100;
+      }
+    } 
+  }
+   
+  
+  return $price;
+}

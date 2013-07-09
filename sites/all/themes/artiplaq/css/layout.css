@@ -88,17 +88,22 @@ body,
 #footer-wrapper {
   padding: 35px 5px 30px;
 }
-.region-footer-firstcolumn,
+.region-footer-firstcolumn{
+  padding: 0 10px;
+  width: 160px;
+}
+
 .region-footer-secondcolumn,
 .region-footer-thirdcolumn{
   padding: 0 10px;
-  width: 160px;
+  width: 130px;
 }
 
 .region-footer-fourthcolumn {
   padding: 0 10px;
   text-align: right;
   width: 420px;
+  float:right;
 }
 
 #footer {

@@ -8,6 +8,15 @@
          url('../fonts/HelveticaNeue.svg#HelveticaNeue') format('svg');
 }
 
+@font-face {
+    font-family: 'HelveticaNeue-bold';
+    src: url('../fonts/HelveticaNeue-CondensedBold.eot');
+    src: url('../fonts/HelveticaNeue-CondensedBold.eot') format('embedded-opentype'),
+         url('../fonts/HelveticaNeue-CondensedBold.woff') format('woff'),
+         url('../fonts/HelveticaNeue-CondensedBold.ttf') format('truetype'),
+         url('../fonts/HelveticaNeue-CondensedBold.svg#HelveticaNeue-bold') format('svg');
+}
+
 /* ---------- Overall Specifications ---------- */
 
 body {
@@ -120,12 +129,12 @@ ol li:before {
     content: counter(numList);
     
     float: left;
-    padding: 3px 1px 0;
+    padding: 2px 1px 0;
     position: absolute;
     left: -28px;
     top:0px;
     
-    font: bold 12px sans-serif;
+    font: normal 14px 'HelveticaNeue';
     text-align: center;
     color: #fff;
     line-height: 18px;
@@ -158,7 +167,7 @@ div.meta,
 p.comment-time,
 table,
 .breadcrumb {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
 }
 input,
 textarea,
@@ -368,7 +377,9 @@ h1#site-name {
 }
 .region-header .block p{
   color: #7A7A79;
-  margin: 0;
+  font-family: arial;
+  font-size: 12px;
+  margin: 0 0 10px;
   padding: 0;
   text-transform: uppercase;
 }
@@ -521,7 +532,15 @@ h1#site-name {
   margin: 0;
   padding: 0 15px;
   height: 45px;
+  
+  -moz-box-shadow: 0px 5px 4px #b4baba;/*FF 3.5+*/
+  -webkit-box-shadow: 0px 5px 4px #b4baba;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#b4baba)";/*IE 8*/
+  box-shadow: 0px 5px 4px #b4baba;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=180, Color=#b4baba);/*IE 5.5-7*/
+  
 }
+
 
 #main-menu-links div.contextual-links-wrapper{
   display: none !important;
@@ -594,27 +613,31 @@ h1#site-name {
 #secondary-menu-links {
   float: right; /* LTR */
   font-size: 0.929em;
-  padding: 5px 10px 10px;
+  padding: 10px 10px 10px;
   margin:0px;
   background:#F8F6F0;
   
-  border-bottom-right-radius: 15px;
-  border-bottom-left-radius: 15px;
-  -moz-border-bottom-right-radius: 15px;
-  -moz-border-bottom-left-radius: 15px;
-  -webkit-border-bottom-right-radius: 15px;
-  -webkit-border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
   
 }
 #secondary-menu-links li{
   border-right: 1px solid #8F9D71;
-  padding:0 10px;
-  color:#8F9D71;
+  color: #8F9D71;
+  float: left;
+  font-family: arial;
+  font-size: 12px;
+  height: 16px;
+  padding: 0 10px;
 }
 
 #secondary-menu-links li.cart{
   background:url('../images/cart-icon.png') no-repeat;
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 #secondary-menu-links li.last{
@@ -628,7 +651,10 @@ h1#site-name {
 
 #secondary-menu-links li a{
   color: #8F9D71 !important;
-  text-decoration:none;
+  font-family: arial;
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 
@@ -664,9 +690,12 @@ h1#site-name {
 
 /* --------------- Highlighted ---------------- */
 
-#highlighted {
-  border-bottom: 1px solid #d3d7d9;
-  font-size: 120%;
+#highlighted .easy-breadcrumb a,
+#highlighted .easy-breadcrumb{
+  color: #7F8E5E;
+  font-size: 11px;
+  font-weight: normal;
+  text-decoration:none;
 }
 
 /* ------------------- Help ------------------- */
@@ -999,6 +1028,7 @@ ul.links {
   padding: 0;
 }
 #footer-columns .content li a {
+  font-family: arial;
   font-size: 11px;
   font-weight: bold;
   padding: 0;
@@ -1183,6 +1213,7 @@ div.password-confirm {
 
 input.form-submit,
 a.button {
+  font-family:'HelveticaNeue-bold';
   background: #fff url(../images/buttons.png) 0 0 repeat-x;
   border: 1px solid #e4e4e4;
   border-bottom: 1px solid #b4b4b4;
@@ -1344,7 +1375,8 @@ input.form-submit:focus {
   margin-top: 2px;
 }
 .form-item label {
-  font-size: 0.929em;
+  color: #493F32;
+  font-size: 14px;
 }
 .form-type-radio label,
 .form-type-checkbox label {
@@ -1777,6 +1809,16 @@ div.admin-panel .description {
   left:0px;
 }
 
+.home-slideshow .views-field-field-image img{
+  -moz-box-shadow: 3px 5px 2px #dfdfdf;/*FF 3.5+*/
+  -webkit-box-shadow: 3px 5px 2px #dfdfdf;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf)";/*IE 8*/
+  box-shadow: 3px 5px 2px #dfdfdf;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf);/*IE 5.5-7*/  
+}
+
+
+
 .home-slideshow .views-field-body{
   left: 40px;
   position: absolute;
@@ -1837,6 +1879,29 @@ div.admin-panel .description {
 
 /* ---------- How It works ----------- */
 
+.front .page-title{
+  color: #7F8E5E;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 0;  
+}
+
+.front .node-page h2{
+  display:none;
+}
+
+.front .node-page .content{
+  margin-top:0px;
+}
+
+.front .panels-flexible-row-1-1-inside {
+  margin-top: 30px;
+}
+
+.front .panels-flexible-region-1-cotent_right {
+  float: right;
+}
+
 .how-it-works{
   background: url("../images/how-it-works.jpg") no-repeat scroll center top #f8f6f0;
   overflow: hidden;
@@ -1846,8 +1911,13 @@ div.admin-panel .description {
 
 .how-it-works .block-title{
   color: #414041;
-  margin: 22px 0px 22px 0px!important;
   font-size: 24px !important;
+  margin: 5px 0 22px !important;
+}
+
+.how-it-works li{
+  margin-bottom:22px;
+  
 }
 
 
@@ -1864,9 +1934,8 @@ div.admin-panel .description {
   border-radius: 0 0 0 0 !important;
   color: #FFFFFF !important;
   display: block;
-  font-family: "HelveticaNeue";
-  font-size: 20px !important;
-  font-family: "HelveticaNeue";
+  font-family: "HelveticaNeue-bold";
+  font-size: 1.3em !important;
   padding: 2px 30px 2px 15px !important;
   text-align: center !important;
   text-decoration: none;
@@ -1894,8 +1963,8 @@ div.admin-panel .description {
   border: 1px solid #e2dfd8;
   color: #bdc3c5;
   display:block;
-  font-family: "HelveticaNeue";
-  font-size: 20px;
+  font-family: "HelveticaNeue-bold";
+  font-size: 1.3em;
   padding: 2px 25px 2px 15px;
   text-align: center;
   text-transform: uppercase;
@@ -1916,13 +1985,13 @@ div.admin-panel .description {
 
 /*------------- inner pages ------------------*/
 
-.pane-menu-menu-page-sidebar-menu ul{
+.inner-page-pane-sidebar .pane-content ul{
   list-style: none outside none;
   margin: 1em 0;
   padding: 0 0 0.25em;
 }
 
-.pane-menu-menu-page-sidebar-menu ul li{
+.inner-page-pane-sidebar .pane-content ul li{
   border-bottom: 1px solid #E2DFD8;
   list-style: none outside none;
   margin: 0;
@@ -1930,7 +1999,7 @@ div.admin-panel .description {
   width: 200px;
 }
 
-.pane-menu-menu-page-sidebar-menu ul li a{
+.inner-page-pane-sidebar .pane-content ul li a{
   color: #3A493C;
   font-size: 14px;
   font-family: arial;
@@ -1938,13 +2007,19 @@ div.admin-panel .description {
   text-decoration: none;
 }
 
-.pane-menu-menu-page-sidebar-menu ul li.active-trail a,
-.pane-menu-menu-page-sidebar-menu ul li a:hover{
+.inner-page-pane-sidebar .pane-content ul li.active-trail a,
+.inner-page-pane-sidebar .pane-content ul li a:hover{
   color:#d86935;
 }
 
 
 /*-------- Mounted photos upload image -----------*/
+
+.upload-form h1{
+  font-family: 'HelveticaNeue';
+  font-size: 30px;
+  margin-top: 2px;
+}
 
 .page-mounted-photos-get-started .image-preview,
 .page-mounted-photos-get-started .form-type-managed-file label{
@@ -2026,18 +2101,28 @@ div.admin-panel .description {
 .node-product-image img{
   margin:60px 0;
   
-  -moz-box-shadow: 9px 9px 8px #d9d7d2;/*FF 3.5+*/
-  -webkit-box-shadow: 9px 9px 8px #d9d7d2;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  -moz-box-shadow: 0 8px 8px #d9d7d2;/*FF 3.5+*/
+  -webkit-box-shadow: 0 8px 8px #d9d7d2;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#d9d7d2)";/*IE 8*/
-  box-shadow: 9px 9px 8px #d9d7d2;
+  box-shadow: 0 8px 8px #d9d7d2;
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#d9d7d2);/*IE 5.5-7*/
 }
 
+.product-add-to-cart-form h1{
+  font-family: 'HelveticaNeue' !important;
+  font-size: 30px !important;
+  margin-top: 2px !important;
+  text-transform: capitalize;
+}
 
 .product-add-to-cart-form{
-  width:370px;
-  float:right;
-  padding:15px;
+  float: right;
+  padding: 0;
+  width: 400px;
+}
+
+.product-add-to-cart-form .pane-node-field-product #edit-line-item-fields{
+  padding: 15px;
 }
 
 .product-add-to-cart-form .pane-node-field-product{
@@ -2050,8 +2135,12 @@ div.admin-panel .description {
 }
 
 #product-node-form #edit-step label,
-.mounted-photos-add-to-cart-form #edit-step label{
-  color:#D86935;
+.mounted-photos-add-to-cart-form #edit-step label,
+.product-add-to-cart-form #edit-step label{
+  color: #D86935;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 #product-node-form .field-type-image,
@@ -2080,14 +2169,26 @@ div.admin-panel .description {
   padding-left: 0;
 }
 
-.stepdiv-mounted-photos ol li:before{
+.stepdiv-mounted-photos ol li.checked:before{
+  background:url('../images/step-checked.png') no-repeat;
+  content: "";
   font: bold 24px/38px sans-serif;
   height: 42px;
   left: 25px;
   width: 42px;
   text-indent: 1px;
-  background:#D9D7D3;
-  top: 18px;
+  top: 22px;
+}
+
+.stepdiv-mounted-photos ol li:before{
+  background: none repeat scroll 0 0 #D9D7D3;
+  font: bold 24px/38px sans-serif;
+  height: 35px;
+  left: 25px;
+  text-indent: 1px;
+  top: 23px;
+  width: 35px;
+  padding:0px 1px 2px !important;
 }
 
 .stepdiv-mounted-photos ol li.active:before{
@@ -2124,12 +2225,13 @@ div.admin-panel .description {
 .stepdiv-mounted-photos li.active{
   border: 1px solid #D9D7D3;
   border-bottom:1px solid #ffffff;
+  border-width:1px 1px 2px;
   color: #D86935;
   
-  -moz-box-shadow: 6px 0px 4px #e6e4de;/*FF 3.5+*/
-  -webkit-box-shadow: 6px 0px 4px #e6e4de;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  -moz-box-shadow: 2px 0px 0px #e6e4de;/*FF 3.5+*/
+  -webkit-box-shadow: 2px 0px 0px #e6e4de;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=108, Color=#e6e4de)";/*IE 8*/
-  box-shadow: 6px 0px 4px #e6e4de;
+  box-shadow: 2px 0px 0px #e6e4de;
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=108, Color=#e6e4de);/*IE 5.5-7*/
 }
 

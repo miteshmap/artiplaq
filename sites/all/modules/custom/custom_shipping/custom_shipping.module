@@ -52,9 +52,7 @@ function custom_shipping_service_rate($shipping_service, $order) {
   
   $shipping_amount = 0;
   foreach($order->commerce_line_items['und'] as $line){
-    $line_item = commerce_line_item_load($line['line_item_id']);
-    
-    
+    $line_item = commerce_line_item_load((int)$line['line_item_id']);
     
     if($line_item->type == 'nautical_chart'){
       $term = taxonomy_term_load($line_item->field_mount_type[LANGUAGE_NONE][0]['tid']);
@@ -70,13 +68,31 @@ function custom_shipping_service_rate($shipping_service, $order) {
       }elseif (in_array(strtolower($term->name),array('paper charts'))){
         $shipping_amount += ceil($line_item->quantity / 20) * 500;
       }
-    }else{
-      echo '<pre>';
-      print_r($line_item);
-      echo '</pre>';
-      exit;
+    }elseif ($line_item->type == 'product'){
+     /*
+      $unitedInch = $line_item->field_united_inch['und'][0]['tid'];
+      $mountStyle = $line_item->field_mount_style['und'][0]['tid'];
+      $price = calculate_commerce_mounted_photo_price($unitedInch, $mountStyle);
+      
+      $unitPrice = $line_item->commerce_unit_price['und'][0]['amount'];
+      
+      $new_line_item->commerce_unit_price['und'][0]['amount'] = ($unitPrice + $price);
+      $new_line_item->commerce_unit_price['und'][0]['data']['components'][] = array(
+          'name' => 'fee',
+          'price' => array('amount' => $price, 'currency_code' => 'USD'),
+          'included' => 1 );
+      
+      
+      $line_item->commerce_total['und'][0]['amount'] = ($unitPrice + $price);
+      $line_item->commerce_total['und'][0]['data']['components'][] = array(
+          'name' => 'fee',
+          'price' => array('amount' => $price, 'currency_code' => 'USD'),
+          'included' => 1 );
+          
+      commerce_line_item_save($line_item);
+      */
     }
-    watchdog('line item','<pre>'.print_r($line_item,true));
+    //watchdog('line item','<pre>'.print_r($line_item,true));
     
   }
   

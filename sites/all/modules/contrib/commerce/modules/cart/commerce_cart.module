@@ -827,6 +827,7 @@ function commerce_cart_order_convert($order, $account) {
  *   The updated order's wrapper.
  */
 function commerce_cart_order_refresh($order) {
+  
   $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
 
   // Loop over every line item on the order...
