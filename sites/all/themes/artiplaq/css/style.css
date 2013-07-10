@@ -183,26 +183,36 @@ caption {
   font-weight: normal;
 }
 blockquote {
-  background: #f7f7f7;
-  border-left: 1px solid #bbb;
+  background: none repeat scroll 0 0 #F7F7F7;
+  border-left: 1px solid #BBBBBB;
+  float: left;
   font-style: italic;
+  height: 70px;
   margin: 1.5em 10px;
-  padding: 0.5em 10px;
+  overflow: hidden;
+  padding: 0.5em 17px;
+  position: relative;
 }
 blockquote:before {
-  color: #bbb;
+  color: #BBBBBB;
   content: "\201C";
   font-size: 3em;
+  left: 0;
   line-height: 0.1em;
   margin-right: 0.2em;
-  vertical-align: -.4em;
+  position: absolute;
+  top: 10px;
+  vertical-align: -0.4em;
 }
-blockquote:after {
-  color: #bbb;
+blockquote:after { 
+  bottom: 0;
+  color: #BBBBBB;
   content: "\201D";
   font-size: 3em;
   line-height: 0.1em;
-  vertical-align: -.45em;
+  position: absolute;
+  right: 10px;
+  vertical-align: -0.45em;
 }
 blockquote > p:first-child {
   display: inline;
@@ -211,6 +221,30 @@ a.feed-icon {
   display: inline-block;
   padding: 15px 0 0 0;
 }
+
+.form-managed-file{
+  overflow:hidden;
+}
+
+.form-managed-file .form-file {
+  background: url("../images/browse.png") no-repeat scroll 266px 0 transparent;
+  height: 27px;
+  margin-left: -80px;
+  width: 345px;
+}
+
+.form-managed-file  .form-submit {
+  background: url("../images/browse1.png") no-repeat scroll 0 0 transparent;
+  border: medium none;
+  border-radius: 0 0 0 0;
+  color: #A7A7A7;
+  font-size: 17px;
+  height: 33px;
+  padding-top: 2px;
+  width: 90px;
+}
+
+
 
 /* ------------------ Table Styles ------------------ */
 
@@ -1365,7 +1399,7 @@ select.form-select {
 }
 input.form-submit:hover,
 input.form-submit:focus {
-  background: #dedede;
+  /*background: #dedede;*/
 }
 .password-suggestions ul li {
   margin-left: 1.2em; /* LTR */
@@ -1810,11 +1844,13 @@ div.admin-panel .description {
 }
 
 .home-slideshow .views-field-field-image img{
-  -moz-box-shadow: 3px 5px 2px #dfdfdf;/*FF 3.5+*/
-  -webkit-box-shadow: 3px 5px 2px #dfdfdf;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
-  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf)";/*IE 8*/
+  /*
+  -moz-box-shadow: 3px 5px 2px #dfdfdf;
+  -webkit-box-shadow: 3px 5px 2px #dfdfdf;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf)";
   box-shadow: 3px 5px 2px #dfdfdf;
-  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf);/*IE 5.5-7*/  
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=149, Color=#dfdfdf);
+  */  
 }
 
 
@@ -1892,6 +1928,8 @@ div.admin-panel .description {
 
 .front .node-page .content{
   margin-top:0px;
+  font-smooth:always;
+  -webkit-font-smoothing: antialiased;
 }
 
 .front .panels-flexible-row-1-1-inside {
@@ -1905,9 +1943,17 @@ div.admin-panel .description {
 .how-it-works{
   background: url("../images/how-it-works.jpg") no-repeat scroll center top #f8f6f0;
   overflow: hidden;
-  width: 350px;
-  padding:10px;
+  width: 330px;
+  padding:10px 10px 10px 25px;
 }
+
+.how-it-works .find-dealer,
+.upload-form .find-dealer{
+  color: #AFB5A0;
+  font-family: 'HelveticaNeue-bold';  
+}
+
+
 
 .how-it-works .block-title{
   color: #414041;
@@ -1932,7 +1978,7 @@ div.admin-panel .description {
   background: url("../images/green-arrow.png") no-repeat scroll 95% 50% #7F8E5E !important;
   border: 1px solid #778657 !important;
   border-radius: 0 0 0 0 !important;
-  color: #FFFFFF !important;
+  color: #f7fbf3 !important;
   display: block;
   font-family: "HelveticaNeue-bold";
   font-size: 1.3em !important;
@@ -1948,9 +1994,10 @@ div.admin-panel .description {
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#A6A197)";/*IE 8*/
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#A6A197);/*IE 5.5-7*/
   
-  -moz-border-radius: 0px !important;/*Firefox*/
-  -webkit-border-radius: 0px !important;/*Safari, Chrome*/
-  border-radius: 0px !important;
+  
+  -moz-border-radius: 2px !important;/*Firefox*/
+  -webkit-border-radius: 2px !important;/*Safari, Chrome*/
+  border-radius: 2px !important;
   
 }
 
@@ -1978,9 +2025,9 @@ div.admin-panel .description {
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#414041)";/*IE 8*/
   filter: progid:DXImageTransform.Microsoft.Shadow(Strength=8, Direction=135, Color=#414041);/*IE 5.5-7*/
   
-  -moz-border-radius: 0px !important;/*Firefox*/
-  -webkit-border-radius: 0px !important;/*Safari, Chrome*/
-  border-radius: 0px !important;
+  -moz-border-radius: 2px !important;/*Firefox*/
+  -webkit-border-radius: 2px !important;/*Safari, Chrome*/
+  border-radius: 2px !important;
 }
 
 /*------------- inner pages ------------------*/
@@ -2026,8 +2073,12 @@ div.admin-panel .description {
   display:none;
 }
 
-.mounted-photo-product-image{
+.mounted-photo-product-image .pane-3{
  background:#F8F6F0;
+}
+
+.mounted-photo-product-image .pane-3 .pane-content{
+  padding:10px;
 }
 
 .mounted-photo-product-image{
@@ -2040,10 +2091,14 @@ div.admin-panel .description {
   text-transform:uppercase;
 }
 
+.mounted-photo-product-image #mounted-photos-image-preview{
+  min-height:300px;
+}
+
 .mounted-photo-product-image p{
-  float:none;
-  text-align:center;
-  color:#a7a7a7;
+  color: #A7A7A7;
+  float: none;
+  text-align: center;
 }
 
 .mounted-photo-product-image img{
@@ -2067,6 +2122,14 @@ div.admin-panel .description {
   display:none;
 }
 
+.mounted-photos-add-to-cart-form .field-widget-options-buttons label:first-child{
+  display:none;
+}
+.mounted-photos-add-to-cart-form .field-widget-options-buttons{
+ margin:30px 0 20px;  
+}
+
+
 .mail-your-artwork{
   clear:both;
   width:380px;
@@ -2080,12 +2143,13 @@ div.admin-panel .description {
   clear:both;
 }
 
-
-
 #edit-line-item-fields-field-united-inch{float: left;margin-bottom: 2px;}
 #edit-line-item-fields-field-color{clear:both;}
 #edit-line-item-fields-field-print-size,#field-hidden-image{display:none;}
-#united-inch-size{float: left;margin: 25px 25px 0;}
+#united-inch-size{
+  float: left;
+  margin: 10px 0 0 10px;
+}
 
 /*-------------- Mounted Photos Product ---------------*/
 
@@ -2113,6 +2177,7 @@ div.admin-panel .description {
   font-size: 30px !important;
   margin-top: 2px !important;
   text-transform: capitalize;
+  clear: both;
 }
 
 .product-add-to-cart-form{
@@ -2133,6 +2198,72 @@ div.admin-panel .description {
   clear:both;
   display:none;
 }
+
+.product-add-to-cart-form .form-item label {
+  float: left;
+  width: 100px;
+}
+
+.product-add-to-cart-form .form-type-textarea label{
+  width:140px;
+}
+
+.product-add-to-cart-form .form-type-textarea label .description{
+  color: #858682;
+  float: right;
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 2px;
+}
+
+.product-add-to-cart-form .field-type-taxonomy-term-reference,
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios .form-item,
+.product-add-to-cart-form  textarea {
+  clear:both;
+}
+
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios .form-item{
+  float:left;
+}
+
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios .form-item:first-child{
+  background:url('../images/standard-bevel.png') no-repeat 120px 2px;
+}
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios .form-item{
+  background:url('../images/micro-bevel.png') no-repeat 120px 2px;
+  width:200px;
+}
+
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios input,
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios label{
+  float:left;
+}
+
+.product-add-to-cart-form .field-name-field-mount-bevel .form-radios{
+  float: left;
+  margin: 0 0 15px 100px;  
+}
+
+
+.product-add-to-cart-form .field-name-field-mount-bevel label:first-child{
+  display:none;
+}
+
+.view-price-sheet{
+  color: #AFB5A0;
+  float: left;
+  font-family: 'HelveticaNeue-bold';
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.view-price-sheet a{color:#c6cabc;}
+
+.product-add-to-cart-form .find-dealer{
+  color: #AFB5A0;
+  font-family: 'HelveticaNeue-bold';  
+}
+
 
 #product-node-form #edit-step label,
 .mounted-photos-add-to-cart-form #edit-step label,
@@ -2237,6 +2368,11 @@ div.admin-panel .description {
 
 
 /*--------- Nautical Charts -------------*/
+
+.chart-image .field-type-image{
+  text-align:center;
+}
+
 .chart-image img{
   -moz-box-shadow: 9px 9px 8px #d9d7d2;/*FF 3.5+*/
   -webkit-box-shadow: 9px 9px 8px #d9d7d2;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
@@ -2294,8 +2430,23 @@ div.admin-panel .description {
   margin-top:10px;
   text-transform:uppercase;
 }
+
+.nautical-chart-term .nautical-chart-term-left{
+  font-family: arial;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color:#84827F;  
+}
+
+
 .nautical-chart-term .nautical-chart-term-right{
   float:right;
+  font-family:'HelveticaNeue-bold';
+}
+
+.nautical-chart-term .nautical-chart-term-right a{
+  color:#AFB5A0;
 }
 
 .jcarousel-skin-tango .jcarousel-container-horizontal {
@@ -2319,11 +2470,28 @@ div.admin-panel .description {
   width: 160px;
   background:none;
   border:none;
+  margin:0 5px;
 }
 
-.jcarousel-skin-tango .jcarousel-item a{
-  color: #493F32;
-  text-decoration: none;  
+.jcarousel-skin-tango .jcarousel-item .views-field-field-image{
+  margin-bottom:5px;
+}
+
+.jcarousel-skin-tango .jcarousel-item .views-field-field-image img{
+  -moz-box-shadow: 4px 4px 3px #dfdfdf;/*FF 3.5+*/
+  -webkit-box-shadow: 4px 4px 3px #dfdfdf;/*Saf3-4, Chrome, iOS 4.0.2-4.2, Android 2.3+*/
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color=#dfdfdf)";/*IE 8*/
+  box-shadow: 4px 4px 3px #dfdfdf;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color=#dfdfdf);/*IE 5.5-7*/ 
+} 
+
+
+
+.jcarousel-skin-tango .jcarousel-item a,
+.jcarousel-skin-tango .jcarousel-item span{
+  color: #6d6c6a;
+  text-decoration: none;
+  font-size: 11px;  
 }
 
 
@@ -2348,7 +2516,8 @@ div.admin-panel .description {
 
 .pane-block-5 h2{
   color: #7F8E5E;
-  font-size: 16px !important;
+  font-size: 15px !important;
+  font-weight: bold;
   text-transform: uppercase;
 }
 
@@ -2363,31 +2532,91 @@ div.admin-panel .description {
   float:right;
 }
 
+.content-bottom-right ul li{
+  margin-bottom:10px;
+}
+
 /*------ nautical chart add to cart ------*/
 
-.node-type-nautical-charts h1{
+.chart-add-to-cart-form{
+  position:relative;
+}
+
+.node-type-nautical-charts h1,
+.node-type-posters-prints h1,
+.chart-add-to-cart-form .pane-node-field-chart-number h2{
   display:none;
+}
+
+.chart-add-to-cart-form .pane-node-product-commerce-price{
+  bottom: 100px;
+  position: absolute;
+  right: 20px;  
+}
+
+
+.chart-add-to-cart-form .pane-node-product-commerce-price h2{
+  float: left;
+  font-size: 15px !important;
+  font-weight: bold;
+  margin: 0;
+}
+
+.chart-add-to-cart-form .pane-node-product-commerce-price .pane-content{
+  float: left;
+  margin-left: 5px;
+}
+
+.chart-add-to-cart-form .field-name-field-chart-number,
+.chart-add-to-cart-form .field-name-field-chart-number label{
+  color: #6D6C6A;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: normal;
+}
+
+.chart-add-to-cart-form .pane-node-product-commerce-price .pane-node-field-nautical-chart{
+  clear:both;
 }
 
 .chart-add-to-cart-form .pane-node-title{
   font-size: 2em;
 }
 
+.chart-add-to-cart-form .pane-node-body{
+  float: left;
+  margin-bottom: 20px;
+}
+
+.chart-add-to-cart-form .pane-node-field-nautical-chart{
+  clear:both;
+}
+
 .chart-add-to-cart-form #edit-line-item-fields{
   background:#f8f6f0;
   padding:10px;
-  margin-bottom:10px;
+  margin-bottom:50px;
+  clear: both;
+}
+
+.chart-add-to-cart-form .green-btn{
+  font-size:20px !important;
 }
 
 .chart-add-to-cart-form #edit-line-item-fields label{
   float: left;
-  width: 90px;
+  width: 110px;
   padding:5px;
 }
 
 .chart-add-to-cart-form #edit-find-a-dealer{
   float:right;
   clear:both;
+}
+
+.chart-add-to-cart-form #edit-find-a-dealer a{
+  font-family: 'HelveticaNeue-bold';
+  color:#afb5a0;  
 }
 
 /*------ Views Retail Price List ------*/
@@ -2436,9 +2665,19 @@ div.admin-panel .description {
 
 /* ---------- store locator -------- */
 
+.view-store-locator .item-list{
+  float: left;
+  width: 200px;
+}
+
+.view-store-locator .item-list ul{
+  padding: 0 0 0.25em 1em;
+}
+
 #map-canvas{
   height:500px;width:600px;float:left;
 }
+
 #side_bar{
   float: left;
   margin-left: 10px;

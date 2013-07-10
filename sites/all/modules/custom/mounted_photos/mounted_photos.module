@@ -34,7 +34,7 @@ function mounted_photos_create_node_programmatically(){
   
   $product = mounted_photos_create_product_programmatically($node);
   
-  $node->title = 'Image-'.$node->nid;
+  $node->title = 'Mounted Photo -'.$node->nid;
 	$node->field_product['und'][0]['product_id'] = $product->product_id;
 	node_save($node);
   
@@ -79,7 +79,7 @@ function mounted_photos_form_alter(&$form, &$form_state, $form_id) {
     drupal_set_title('Choose Your Photo');
     
     unset($form['actions']['preview']);
-    $form['title']['#value'] = t('Image');
+    $form['title']['#value'] = t('Mounted Photo');
     $form['actions']['submit']['#value'] = t('Upload Image');
     $form['actions']['submit']['#attributes'] = array('class' => array('green-btn'));
     
@@ -90,6 +90,7 @@ function mounted_photos_form_alter(&$form, &$form_state, $form_id) {
     if ($form['line_item_fields']['#entity']->type == 'product'){
       
       $form['line_item_fields']['field_united_inch']['#suffix'] = '<div id="united-inch-size"></div>';
+      $form['line_item_fields']['field_comments']['und'][0]['value']['#title'] = t('comments:') .' '. '<span class="description">(Optional)</span>';
       
       $fileUrl = $base_url.get_price_list_link();
       $form['view_prices'] = array(
@@ -97,13 +98,13 @@ function mounted_photos_form_alter(&$form, &$form_state, $form_id) {
         '#title' => t('View Our Price Sheet'),
         '#href' => $fileUrl,
         '#weight' => 40,
-        '#prefix' => '<div style="float:left;margin:10px 0;">',
+        '#prefix' => '<div class="view-price-sheet">',
         '#suffix' => '</div>',
       );  
     } else {
       $form['find_a_dealer'] = array(
         '#type' => 'item',
-        '#markup' => t('Prefer to order in person? ').l(t('FIND A DEALER'),'#'),
+        '#markup' => t('Prefer to order in person? ').l(t('FIND A DEALER'),'store-locator',array('attributes' => array('class' => array('find-dealer')) )),
         '#weight' => 50,
       );
     }
@@ -121,14 +122,14 @@ function mounted_photos_custom_validate($form, &$form_state){
 function mounted_photos_node_insert($node) {
   if($node->type == 'product' && arg(1) != 'by_mail'){
     mounted_phots_node_title($node);
-    $node->title = 'Image-'.$node->nid;
+    $node->title = 'Mounted Photo -'.$node->nid;
     drupal_goto('mounted_photos/get_started/'.$node->nid);  
   }
   
 }
 
 function mounted_phots_node_title($node){
-  $title = 'Image-'.$node->nid;
+  $title = 'Mounted Photo -'.$node->nid;
   $nid = $node->nid;
   db_update('node')
   ->fields(array('title' => $title))

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 09, 2013 at 04:09 PM
+-- Generation Time: Jul 10, 2013 at 04:57 PM
 -- Server version: 5.5.20
 -- PHP Version: 5.3.10
 
@@ -435,7 +435,7 @@ CREATE TABLE IF NOT EXISTS `watchdog` (
   KEY `type` (`type`),
   KEY `uid` (`uid`),
   KEY `severity` (`severity`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Table that contains logs of all system events.' AUTO_INCREMENT=9040 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Table that contains logs of all system events.' AUTO_INCREMENT=9973 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
